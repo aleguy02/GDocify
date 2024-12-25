@@ -1,40 +1,21 @@
+const fs = require("fs").promises;
+const path = require("path");
+const process = require("process");
 const { google } = require("googleapis");
 
 const { authorize } = require("./auth/auth.js");
 
-/**
- * Lists the names and IDs of up to 10 folders
- * @param {OAuth2Client} authClient An authorized OAuth2 Client
- */
-async function listFolders(authClient) {
-  const drive = google.drive({ version: "v3", auth: authClient });
-  const res = await drive.files.list({
-    q: "mimeType='application/vnd.google-apps.folder'",
-    pageSize: 10,
-    fields: "nextPageToken, files(id, name)",
-  });
-  const files = res.data.files;
-  if (files.length === 0) {
-    console.log("No files found.");
-    return;
-  }
-
-  console.log("Files:");
-  files.map((file) => {
-    console.log(`${file.name} (${file.id})`);
-  });
-}
+const NOTE_PATH = path.join(process.cwd(), "NOTES", "test.txt");
 
 /**
  * Get the folder ID of a GDrive folder. GDrive doesn't enforce unique
  * folder names, so if there are multiple folders with the same name,
  * gets the ID of the most recently modified by user folder by that name.
- * @param {OAuth2Client} authClient An authorized OAuth2 Client
+ * @param {drive_v3.Drive} drive The Google Drive API client object.
  * @param {string} name The name of the GDrive folder being searched for
  * @returns {Promise<string>} Folder ID
  */
-async function getFolderID(authClient, name) {
-  const drive = google.drive({ version: "v3", auth: authClient });
+async function getFolderID(drive, name) {
   const query = `
     name='${name}' and 
     mimeType='application/vnd.google-apps.folder' and 
@@ -53,7 +34,22 @@ async function getFolderID(authClient, name) {
   return res.data.files[0].id;
 }
 
-authorize()
-  .then((authClient) => getFolderID(authClient, "College Apps"))
-  .then((id) => console.log(id))
-  .catch(console.error);
+async function gdocify() {
+  const data = await fs.readFile(NOTE_PATH, "utf-8");
+  const authClient = await authorize();
+
+  const drive = google.drive({ version: "v3", auth: authClient });
+
+  const folderId = await getFolderID(drive, "Test");
+  const fileMetadata = {
+    name: "TestFile",
+    mimeType: "application/vnd.google-apps.document",
+    parents: [folderId],
+  };
+  const file = await drive.files.create({
+    requestBody: fileMetadata,
+    fields: "id",
+  });
+  console.log("File Id:", file.data.id);
+}
+gdocify();

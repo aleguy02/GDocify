@@ -8,6 +8,7 @@ const { google } = require("googleapis");
 const SCOPES = [
   "https://www.googleapis.com/auth/drive.metadata.readonly",
   "https://www.googleapis.com/auth/drive",
+  "https://www.googleapis.com/auth/documents",
 ];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
@@ -51,7 +52,7 @@ async function saveCredentials(client) {
 
 /**
  * Load or request or authorization to call APIs.
- *
+ * @returns {Promise<OAuth2Client>}
  */
 async function authorize() {
   let client = await loadSavedCredentialsIfExist();
