@@ -34,15 +34,19 @@ async function getFolderID(drive, name) {
   return res.data.files[0].id;
 }
 
+/**
+ * Gdocify
+ */
 async function gdocify() {
   const data = await fs.readFile(NOTE_PATH, "utf-8");
   const authClient = await authorize();
 
   const drive = google.drive({ version: "v3", auth: authClient });
+  const docs = google.docs({ version: "v1", auth: authClient });
 
   const folderId = await getFolderID(drive, "Test");
   const fileMetadata = {
-    name: "TestFile",
+    name: "Ozymandias",
     mimeType: "application/vnd.google-apps.document",
     parents: [folderId],
   };
@@ -50,6 +54,21 @@ async function gdocify() {
     requestBody: fileMetadata,
     fields: "id",
   });
-  console.log("File Id:", file.data.id);
+  const reqBody = {
+    requests: [
+      {
+        insertText: {
+          endOfSegmentLocation: {},
+          text: data.toString(),
+        },
+      },
+    ],
+  };
+  docs.documents.batchUpdate({
+    documentId: file.data.id,
+    requestBody: reqBody,
+  });
+
+  console.log("Done");
 }
 gdocify();
