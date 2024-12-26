@@ -5,8 +5,38 @@ const { google } = require("googleapis");
 
 const { authorize } = require("./auth/auth.js");
 
-const NOTE_PATH = path.join(process.cwd(), "NOTES", "test.txt");
+const PATH = path.join(process.cwd(), "NOTES");
 const FOLDER_NAME = "Test";
+
+/**
+ * Get filenames and content of all .txt files in the specified directory.
+ * @returns {Promise<Array<{name: string, content: string}>>} A promise that resolves to an array of objects, each containing the name and content of a .txt file.
+ */
+async function extractFileData() {
+  try {
+    const res = new Array(0);
+    const files = await fs.readdir(PATH);
+
+    // create an array of filenames of all .txt files in NOTES folder
+    const txtFiles = files.filter((file) => file.endsWith(".txt"));
+
+    // create an { name: str, content: str } object for each filename and push to res
+    for (const filename of txtFiles) {
+      const name = filename.slice(0, -4);
+
+      // extract file content
+      const filepath = path.join(PATH, filename);
+      const content = await fs.readFile(filepath, "utf-8");
+
+      res.push({ name: name, content: content });
+    }
+
+    return res;
+  } catch (err) {
+    console.error("Error extracting file data:", error);
+    throw error;
+  }
+}
 
 /**
  * Get the folder ID of a GDrive folder. GDrive doesn't enforce unique
@@ -14,9 +44,9 @@ const FOLDER_NAME = "Test";
  * gets the ID of the most recently modified by user folder by that name.
  * @param {object} drive The Google Drive API client object.
  * @param {string} name The name of the GDrive folder being searched for
- * @returns {Promise<string>} Folder ID
+ * @returns {Promise<string>} A promise that resolves to a string containing the folder ID of the folder by that name
  */
-async function getFolderID(drive, name) {
+async function getFolderId(drive, name) {
   try {
     const query = `
     name='${name}' and 
@@ -43,32 +73,37 @@ async function getFolderID(drive, name) {
 /**
  * Create a new Google Doc with the specified content in the specified folder.
  * @param {string} folderId The ID of the folder where the new document will be created.
- * @param {string} content The content to be inserted into the new document.
+ * @param {Array<{name: string, content: string}>} data An array of objects, each containing the name and content of a .txt file.
  * @param {object} drive The Google Drive API client object.
  * @param {object} docs The Google Docs API client object.
  * @returns {Promise<void>}
  */
-async function createGoogleDoc(folderId, content, drive, docs) {
+async function createGoogleDoc(folderId, data, drive, docs) {
   try {
     const fileMetadata = {
-      name: "Ozymandias",
+      name: data.name,
       mimeType: "application/vnd.google-apps.document",
       parents: [folderId],
     };
+
+    // create Google Doc with metadata only
     const file = await drive.files.create({
       requestBody: fileMetadata,
       fields: "id",
     });
+
     const reqBody = {
       requests: [
         {
           insertText: {
             endOfSegmentLocation: {},
-            text: content,
+            text: data.content,
           },
         },
       ],
     };
+
+    // write file content to Google Doc
     await docs.documents.batchUpdate({
       documentId: file.data.id,
       requestBody: reqBody,
@@ -84,14 +119,23 @@ async function createGoogleDoc(folderId, content, drive, docs) {
  */
 async function gdocify() {
   try {
-    const data = await fs.readFile(NOTE_PATH, "utf-8");
+    // extract file data
+    const data = await extractFileData();
+
+    // authorize the client
     const authClient = await authorize();
 
+    // initialize Google Drive and Docs API clients
     const drive = google.drive({ version: "v3", auth: authClient });
     const docs = google.docs({ version: "v1", auth: authClient });
 
-    const folderId = await getFolderID(drive, FOLDER_NAME);
-    await createGoogleDoc(folderId, data, drive, docs);
+    // get the folder ID where the documents will be stored
+    const folderId = await getFolderId(drive, FOLDER_NAME);
+
+    // create Google Docs concurrently. Promise.all takes an iterable of promises as an input and returns a single Promise
+    await Promise.all(
+      data.map((item) => createGoogleDoc(folderId, item, drive, docs))
+    );
 
     console.log("Done");
   } catch (error) {
