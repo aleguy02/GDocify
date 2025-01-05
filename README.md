@@ -87,7 +87,7 @@ If not installed, download and install from [Node.js Official Website](https://n
 4. Provide a name (e.g., `[Your App Name] Desktop App`) → **Create**.
 5. Download the JSON file:
    - Rename it to `credentials.json`.
-   - Create a `config` directory in your project's root directory. Move `credentials.json` into the new `config` directory.
+   - Move `credentials.json` into the `config` directory.
 
 ---
 
@@ -106,7 +106,14 @@ If not installed, download and install from [Node.js Official Website](https://n
 
 ---
 
-### Step 2: Run the Project
+### Step 2: Set Up NOTES folder
+
+1. Open your `NOTES` folder. Delete `Oh, the Places You'll Go!.txt`.
+2. Move or paste all the .txt files you want to upload into the `NOTES` folder
+
+---
+
+### Step 3: Run the Project
 
 1. Open your terminal and navigate to the project's root directory.
 2. Run the following command:
