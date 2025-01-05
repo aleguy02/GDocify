@@ -2,5 +2,8 @@
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
     "googleapis": "^105.0.0"
+  },
+  "scripts": {
+    "gdocify": "node ."
   }
 }
