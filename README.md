@@ -1,5 +1,5 @@
 <!-- TODO: review this and rewrite for accessibility if needed -->
----
+![Socialify image](https://socialify.git.ci/aleguy02/GDocify/image?description=1&language=1&logo=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcRNt8D27z6TIINfXpS5f7-_1wp_UVyfmCptTA%26s&name=1&owner=1&stargazers=1&theme=Light)
 
 # GDocify
 
@@ -9,37 +9,25 @@ GDocify integrates with the **Google Docs API** and **Google Drive API**, allowi
 
 ## Prerequisites
 
-- **Node.js**: Ensure Node.js is installed (tested with npm version 10.8.2).
-- **Free Google Cloud Platform Account**: Required for API setup and credential configuration.
+Ensure you have a stable version of Node.js and Git installed on your system (tested with npm version 10.8.2). Free Google Cloud Platform Account. Required for API setup and credential configuration.
 <!-- TODO: break this step down so I don't scare people away -->
 
 ---
 
 ## Setup Instructions
 
-### 1. Fork and Clone the Repository
+### 1. Fork the Repository
 
 1. Fork this repository to your GitHub account.
 2. Clone the forked repository to your local machine:
    ```bash
-   git clone https://github.com/your-username/Gdocify.git
-   cd your-forked-repo
+   git clone https://github.com/your-username/GDocify.git
+   cd GDocify
    ```
-
-### 2. Install Node.js and npm
-
-Ensure Node.js and npm are installed on your system. To check, run:
-
-```bash
-node -v
-npm -v
-```
-
-If not installed, download and install from [Node.js Official Website](https://nodejs.org).
 
 ---
 
-### 3. Set Up Google Cloud Project
+### 2. Set Up Google Cloud Project
 
 #### a) Create a Google Cloud Project
 
@@ -57,14 +45,14 @@ If not installed, download and install from [Node.js Official Website](https://n
 
 ---
 
-### 4. Configure OAuth Consent Screen
+### 3. Configure OAuth Consent Screen
 
 1. Go to:
    <!-- TODO: insert screenshot here -->
    **Hamburger Menu** → **All Products** → **Management** → **APIs and Services** → **OAuth Consent Screen**.
-2. Select **User Type**: **External** → **Create**.
+2. Select **User Type**: **External**, then **Create**.
 3. Fill out the following:
-   - **App Name**: [Your App Name]
+   - **App Name**: [GDocify]
    - **Support Email**: [Your Email]
    - **Developer Contact Info**: [Your Contact Email]
 4. Click **Save and Continue**.
@@ -76,14 +64,14 @@ If not installed, download and install from [Node.js Official Website](https://n
 
 ---
 
-### 5. Configure OAuth Credentials
+### 4. Configure OAuth Credentials
 
 1. Navigate to:
    <!-- TODO: insert screenshot here -->
    **Hamburger Menu** → **All Products** → **Management** → **APIs and Services** → **Credentials**.
 2. Click **+Create Credentials** → **OAuth Client ID**.
 3. Select **Application Type**: **Desktop app**.
-4. Provide a name (e.g., `[Your App Name] Desktop App`) → **Create**.
+4. Name it `[Your App Name] Desktop App` (e.g. `aleguy02 Desktop App`), then **Create**.
 5. Download the JSON file:
    - Rename it to `credentials.json`.
    - Move `credentials.json` into the `config` directory.
