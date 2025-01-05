@@ -1,5 +1,6 @@
 # secrets
-config/
+config/credentials.json
+config/token.json
 
 # dependency directories
 node_modules/
