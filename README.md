@@ -1,5 +1,4 @@
-Here's a README file based on your setup instructions:
-
+<!-- TODO: review this and rewrite for accessibility if needed -->
 ---
 
 # GDocify
