@@ -6,6 +6,8 @@ const { google } = require("googleapis");
 const { authorize } = require("./auth/auth.js");
 
 const PATH = path.join(process.cwd(), "NOTES");
+
+// Edit folder name
 const FOLDER_NAME = "Test";
 
 /**
