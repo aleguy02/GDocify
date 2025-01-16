@@ -60,7 +60,7 @@ Before you can use your app, you must configure the OAuth Consent Screen.
 
      <img src="doc/images/AddToTable.png" width="400">
 
-1. Verify the `.../auth/documents` and `.../auth/drives` boxes are checked, then select UPDATE then SAVE AND CONTINUE
+1. Verify the `.../auth/documents` and `.../auth/drives` boxes are checked, then select UPDATE then SAVE AND CONTINUE<br>
    <img src="doc/images/Checkboxes.png" width="400">
 
 1. In the "Test users" page, select ADD USERS and input your email. Select ADD then SAVE AND CONTINUE
