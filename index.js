@@ -48,7 +48,7 @@ async function extractFileData() {
  * @param {object} docs The Google Docs API client object.
  * @returns {Promise<void>}
  */
-async function createGoogleDoc(folderId, data, drive, docs) {
+async function createGoogleDoc(folderId, data, drive) {
   try {
     const fileMetadata = {
       name: data.name,
@@ -102,11 +102,10 @@ async function gdocify() {
 
     // initialize Google Drive and Docs API clients
     const drive = google.drive({ version: "v3", auth: authClient });
-    const docs = google.docs({ version: "v1", auth: authClient });
 
     // create Google Docs concurrently. Promise.all takes an iterable of promises as an input and returns a single Promise
     await Promise.all(
-      data.map((item) => createGoogleDoc(FOLDER_ID, item, drive, docs))
+      data.map((item) => createGoogleDoc(FOLDER_ID, item, drive))
     );
 
     console.log("Done");

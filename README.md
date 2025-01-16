@@ -25,7 +25,7 @@ First, sign into or create a free [Google Cloud Platform](https://console.cloud.
 https://console.cloud.google.com/projectcreate \
 Name the project GDocify or whatever other name you want. You can leave the location as "No organization".
 
-Next, enable the Google Drive and Google Docs APIs.
+Next, enable the Google Drive API.
 
 1. Select Hamburger Menu<br>
    <img src="doc/images/Hamburger.png" width="400">
@@ -33,7 +33,7 @@ Next, enable the Google Drive and Google Docs APIs.
    <img src="doc/images/APIsAndServices.png" width="400">
 1. Select ENABLE APIS AND SERVICES<br>
    <img src="doc/images/EnableAPIS.png" width="400">
-1. Search for Google Drive API, select it, then select ENABLE. Do the same for Google Docs API<br>
+1. Search for Google Drive API, select it, then select ENABLE<br>
    <img src="doc/images/EnableButton.png" width="400">
 
 ---
@@ -53,14 +53,13 @@ Before you can use your app, you must configure the OAuth Consent Screen.
 1. In the "Scopes" page, select ADD OR REMOVE SCOPES<br>
    <img src="doc/images/AddOrRemoveScopes.png" width="400">
 
-1. Manually the following scopes by copying and pasting these links into the input box at the bottom and selecting ADD TO TABLE:
+1. Manually the following scope by copying and pasting this link into the input box at the bottom and selecting ADD TO TABLE:
 
-   - `https://www.googleapis.com/auth/documents`
    - `https://www.googleapis.com/auth/drive`
 
      <img src="doc/images/AddToTable.png" width="400">
 
-1. Verify the `.../auth/documents` and `.../auth/drives` boxes are checked, then select UPDATE then SAVE AND CONTINUE<br>
+1. Verify the `.../auth/drives` box is checked, then select UPDATE then SAVE AND CONTINUE<br>
    <img src="doc/images/Checkboxes.png" width="400">
 
 1. In the "Test users" page, select ADD USERS and input your email. Select ADD then SAVE AND CONTINUE
