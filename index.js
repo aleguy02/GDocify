@@ -8,7 +8,7 @@ const { authorize } = require("./auth/auth.js");
 const PATH = path.join(process.cwd(), "NOTES");
 
 // Edit folder name
-const FOLDER_NAME = "Test";
+const FOLDER_ID = "1-SazHPtZWFSj-DXn1a4955vzF3c7WLrz";
 
 /**
  * Get filenames and content of all .txt files in the specified directory.
@@ -36,38 +36,6 @@ async function extractFileData() {
     return res;
   } catch (err) {
     console.error("Error extracting file data:", error);
-    throw error;
-  }
-}
-
-/**
- * Get the folder ID of a GDrive folder. GDrive doesn't enforce unique
- * folder names, so if there are multiple folders with the same name,
- * gets the ID of the most recently modified by user folder by that name.
- * @param {object} drive The Google Drive API client object.
- * @param {string} name The name of the GDrive folder being searched for
- * @returns {Promise<string>} A promise that resolves to a string containing the folder ID of the folder by that name
- */
-async function getFolderId(drive, name) {
-  try {
-    const query = `
-    name='${name}' and 
-    mimeType='application/vnd.google-apps.folder' and 
-    trashed=false
-    `;
-    const res = await drive.files.list({
-      q: query,
-      fields: "nextPageToken, files(id, name, modifiedTime)",
-      spaces: "drive",
-      orderBy: "modifiedByMeTime desc",
-    });
-    if (!res.data || !res.data.files.length) {
-      throw new Error(`No such folder: Could not locate '${name}' folder`);
-    }
-
-    return res.data.files[0].id;
-  } catch (error) {
-    console.error("Error getting folder ID:", error);
     throw error;
   }
 }
@@ -131,12 +99,9 @@ async function gdocify() {
     const drive = google.drive({ version: "v3", auth: authClient });
     const docs = google.docs({ version: "v1", auth: authClient });
 
-    // get the folder ID where the documents will be stored
-    const folderId = await getFolderId(drive, FOLDER_NAME);
-
     // create Google Docs concurrently. Promise.all takes an iterable of promises as an input and returns a single Promise
     await Promise.all(
-      data.map((item) => createGoogleDoc(folderId, item, drive, docs))
+      data.map((item) => createGoogleDoc(FOLDER_ID, item, drive, docs))
     );
 
     console.log("Done");
