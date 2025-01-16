@@ -55,29 +55,34 @@ async function createGoogleDoc(folderId, data, drive, docs) {
       mimeType: "application/vnd.google-apps.document",
       parents: [folderId],
     };
+    const media = {
+      mimeType: "text/plain",
+      body: data.content,
+    };
 
-    // create Google Doc with metadata only
+    // create Google Doc with metadata and media
     const file = await drive.files.create({
       requestBody: fileMetadata,
+      media: media,
       fields: "id",
     });
 
-    const reqBody = {
-      requests: [
-        {
-          insertText: {
-            endOfSegmentLocation: {},
-            text: data.content,
-          },
-        },
-      ],
-    };
+    // const reqBody = {
+    //   requests: [
+    //     {
+    //       insertText: {
+    //         endOfSegmentLocation: {},
+    //         text: data.content,
+    //       },
+    //     },
+    //   ],
+    // };
 
-    // write file content to Google Doc
-    await docs.documents.batchUpdate({
-      documentId: file.data.id,
-      requestBody: reqBody,
-    });
+    // // write file content to Google Doc
+    // await docs.documents.batchUpdate({
+    //   documentId: file.data.id,
+    //   requestBody: reqBody,
+    // });
   } catch (error) {
     console.error("Error creating Google Doc:", error);
     throw error;
