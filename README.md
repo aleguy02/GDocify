@@ -8,6 +8,40 @@ Upload all your plaintext files to Google Drive with **GDocify**. This app integ
 
 Ensure you have a stable version of Node.js and Git installed on your system (tested with npm version 10.8.2) and a free Google Cloud Platform Account. This is required for API setup and credential configuration but, fortunately, easy to set up.
 
+---
+
+## Usage Instructions
+
+If you haven't used the project before, follow the Setup instructions below, otherwise continue with Usage instructions.
+
+### Step 1: Update Folder ID
+
+1. Open the `index.js` file.
+2. Locate the `FOLDER_ID` variable and set it to the ID of the folder you want to create your files in:
+
+   ```javascript
+   const FOLDER_ID = "YourFolderName";
+   ```
+
+   **Note**: The folder ID can be found in the url when you open the folder in Google Drive. For example, if I'm in my "Notes" folder in Google Drive and the url is `https://drive.google.com/drive/folders/1-SazHPtZWFSj-DXn1a4955vzF3c7WLrz?dmr=1&ec=wgc-drive-globalnav-goto`, the folder ID will be the string after "folders/" and before "?". In this case, the folder id is `1-SazHPtZWFSj-DXn1a4955vzF3c7WLrz`. This applies to folders with duplicate names too, as folder IDs are unique in Google Drive.
+
+### Step 2: Set Up NOTES folder
+
+1. Open your `NOTES` folder. Delete `Oh, the Places You'll Go!.txt`.
+2. Move or paste all the .txt files you want to upload into the `NOTES` folder
+
+### Step 3: Run the Project
+
+1. Open your terminal and navigate to the project's root directory.
+2. Run the following command:
+   ```bash
+   npm run gdocify
+   ```
+
+This command executes the script, interacting with the Google Docs and Drive APIs as configured.
+
+---
+
 ## Setup Instructions
 
 ### Fork the Repository
@@ -35,8 +69,6 @@ Next, enable the Google Drive API.
    <img src="doc/images/EnableAPIS.png" width="400">
 1. Search for Google Drive API, select it, then select ENABLE<br>
    <img src="doc/images/EnableButton.png" width="400">
-
----
 
 ### Configure OAuth Consent Screen
 
@@ -76,39 +108,15 @@ Before you can use your app, you must configure the OAuth Consent Screen.
    <img src="doc/images/DownloadJSON.png" height="250">
 1. Rename the downloaded file to `credentials.json` and move it into the repo's `config` directory.
 
-## Usage Instructions
-
-### Step 1: Update Folder ID
-
-1. Open the `index.js` file.
-2. Locate the `FOLDER_ID` variable and set it to the ID of the folder you want to create your files in:
-
-   ```javascript
-   const FOLDER_ID = "YourFolderName";
-   ```
-
-   **Note**: The folder ID can be found in the url when you open the folder in Google Drive. For example, if I'm in my "Notes" folder in Google Drive and the url is `https://drive.google.com/drive/folders/1-SazHPtZWFSj-DXn1a4955vzF3c7WLrz?dmr=1&ec=wgc-drive-globalnav-goto`, the folder ID will be the string after "folders/" and before "?". In this case, the folder id is `1-SazHPtZWFSj-DXn1a4955vzF3c7WLrz`. This applies to folders with duplicate names too, as folder IDs are unique in Google Drive.
-
-### Step 2: Set Up NOTES folder
-
-1. Open your `NOTES` folder. Delete `Oh, the Places You'll Go!.txt`.
-2. Move or paste all the .txt files you want to upload into the `NOTES` folder
-
-### Step 3: Run the Project
-
-1. Open your terminal and navigate to the project's root directory.
-2. Run the following command:
-   ```bash
-   npm run gdocify
-   ```
-
-This command executes the script, interacting with the Google Docs and Drive APIs as configured.
+---
 
 ## Notes
 
 - If the folder name specified in `index.js` does not exist in your Google Drive the script will throw an error.
 - If you encounter an error that your token has expired, try deleting `token.json` and trying again.
 - Be cautious of quota limits for Google Drive and Docs API usage.
+
+---
 
 ## Helpful Resources
 
